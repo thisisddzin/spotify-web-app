@@ -1,26 +1,40 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+
+import "./config/reactotron";
+
+import { Provider } from "react-redux";
+
+import { GlobalStyle } from "./styles/global";
+
+import { BrowserRouter } from "react-router-dom";
+
+import Sidebar from "./components/Sidebar";
+import Player from "./components/Player";
+import Header from "./components/Header";
+
+import { Wrapper, Container, Content } from "./styles/components";
+
+import Routes from "./routes";
+import store from "./store";
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <Provider store={store}>
+        <BrowserRouter>
+          <GlobalStyle />
+          <Wrapper>
+            <Container>
+              <Sidebar />
+              <Content>
+                <Header />
+                <Routes />
+              </Content>
+            </Container>
+            <Player />
+          </Wrapper>
+        </BrowserRouter>
+      </Provider>
     );
   }
 }
