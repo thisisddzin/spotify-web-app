@@ -1,69 +1,105 @@
-import React from "react";
+import React, { Component } from "react";
+
+import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { Creators as PlaylistsActions } from "../../store/ducks/playlists";
 
 import { Container, NewPlayList, Nav } from "./styles";
 
 import AddPlayListIcon from "../../assets/images/add_playlist.svg";
 
-const Sidebar = () => (
-  <Container>
-    <div>
-      <Nav main>
-        <li>
-          <a href="">Navegar</a>
-        </li>
-        <li>
-          <a href="">Rádio</a>
-        </li>
-      </Nav>
-      <Nav>
-        <li>
-          <span>SUA BIBLIOTECA</span>
-        </li>
-        <li>
-          <a href="">Seu Daily MIx</a>
-        </li>
-        <li>
-          <a href="">Tocadas recentemente</a>
-        </li>
-        <li>
-          <a href="">Músicas</a>
-        </li>
-        <li>
-          <a href="">Álbums</a>
-        </li>
-        <li>
-          <a href="">Artistas</a>
-        </li>
-        {/* <li>
-          <a href="">Estações</a>
-        </li>
-        <li>
-          <a href="">Arquivos locais</a>
-        </li>
-        <li>
-          <a href="">Vídeos</a>
-        </li>
-        <li>
-          <a href="">Podcasts</a>
-        </li> */}
-      </Nav>
-      <Nav>
-        <li>
-          <span>Playlist</span>
-        </li>
-        <li>
-          <a href="">Melhores do Rock</a>
-        </li>
-        <li>
-          <a href="">Melhores Funks 2019</a>
-        </li>
-      </Nav>
-    </div>
+class Sidebar extends Component {
+  static propTypes = {
+    getPlaylistsRequest: PropTypes.func.isRequired,
+    playlists: PropTypes.shape({
+      data: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.number,
+          title: PropTypes.string
+        })
+      )
+    }).isRequired
+  };
 
-    <NewPlayList>
-      <img src={AddPlayListIcon} alt="Adicionar playlist" /> Nova Playlist
-    </NewPlayList>
-  </Container>
-);
+  componentDidMount() {
+    this.props.getPlaylistsRequest();
+  }
 
-export default Sidebar;
+  render() {
+    return (
+      <Container>
+        <div>
+          <Nav main>
+            <li>
+              <Link to="">Navegar</Link>
+            </li>
+            <li>
+              <Link to="">Rádio</Link>
+            </li>
+          </Nav>
+          <Nav>
+            <li>
+              <span>SUA BIBLIOTECA</span>
+            </li>
+            <li>
+              <Link to={() => {}}>Seu Daily MIx</Link>
+            </li>
+            <li>
+              <Link to={() => {}}>Tocadas recentemente</Link>
+            </li>
+            <li>
+              <Link to={() => {}}>Músicas</Link>
+            </li>
+            <li>
+              <Link to={() => {}}>Álbums</Link>
+            </li>
+            <li>
+              <Link to={() => {}}>Artistas</Link>
+            </li>
+            {/* <li>
+              <Link to={() => {}}>Estações</Link>
+            </li>
+            <li>
+              <Link to={() => {}}>Arquivos locais</Link>
+            </li>
+            <li>
+              <Link to={() => {}}>Vídeos</Link>
+            </li>
+            <li>
+              <Link to={() => {}}>Podcasts</Link>
+            </li> */}
+          </Nav>
+          <Nav>
+            <li>
+              <span>Playlist</span>
+            </li>
+            {this.props.playlists.data.map(playlist => (
+              <li key={playlist.id}>
+                <Link to={`/playlists/${playlist.id}`}>{playlist.title}</Link>
+              </li>
+            ))}
+          </Nav>
+        </div>
+
+        <NewPlayList>
+          <img src={AddPlayListIcon} alt="Adicionar playlist" /> Nova Playlist
+        </NewPlayList>
+      </Container>
+    );
+  }
+}
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(PlaylistsActions, dispatch);
+
+const mapStateToProps = state => ({
+  playlists: state.playlists
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Sidebar);
