@@ -11,6 +11,8 @@ import { Container, NewPlayList, Nav } from "./styles";
 
 import AddPlayListIcon from "../../assets/images/add_playlist.svg";
 
+import Loading from "../Loading";
+
 class Sidebar extends Component {
   static propTypes = {
     getPlaylistsRequest: PropTypes.func.isRequired,
@@ -20,7 +22,8 @@ class Sidebar extends Component {
           id: PropTypes.number,
           title: PropTypes.string
         })
-      )
+      ),
+      loading: PropTypes.bool
     }).isRequired
   };
 
@@ -34,7 +37,7 @@ class Sidebar extends Component {
         <div>
           <Nav main>
             <li>
-              <Link to="">Navegar</Link>
+              <Link to="/">Navegar</Link>
             </li>
             <li>
               <Link to="">Rádio</Link>
@@ -45,36 +48,37 @@ class Sidebar extends Component {
               <span>SUA BIBLIOTECA</span>
             </li>
             <li>
-              <Link to={() => {}}>Seu Daily MIx</Link>
+              <Link to="">Seu Daily MIx</Link>
             </li>
             <li>
-              <Link to={() => {}}>Tocadas recentemente</Link>
+              <Link to="">Tocadas recentemente</Link>
             </li>
             <li>
-              <Link to={() => {}}>Músicas</Link>
+              <Link to="">Músicas</Link>
             </li>
             <li>
-              <Link to={() => {}}>Álbums</Link>
+              <Link to="">Álbums</Link>
             </li>
             <li>
-              <Link to={() => {}}>Artistas</Link>
+              <Link to="">Artistas</Link>
             </li>
             {/* <li>
-              <Link to={() => {}}>Estações</Link>
+              <Link to="">Estações</Link>
             </li>
             <li>
-              <Link to={() => {}}>Arquivos locais</Link>
+              <Link to="">Arquivos locais</Link>
             </li>
             <li>
-              <Link to={() => {}}>Vídeos</Link>
+              <Link to="">Vídeos</Link>
             </li>
             <li>
-              <Link to={() => {}}>Podcasts</Link>
+              <Link to="">Podcasts</Link>
             </li> */}
           </Nav>
           <Nav>
             <li>
               <span>Playlist</span>
+              {this.props.playlists.loading && <Loading />}
             </li>
             {this.props.playlists.data.map(playlist => (
               <li key={playlist.id}>
