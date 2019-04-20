@@ -8,8 +8,6 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Creators as PlaylistsActions } from "../../store/ducks/playlists";
 
-import EminemCover from "../../assets/covers/eminem.jpg";
-
 import Loading from "../../components/Loading";
 
 class Browse extends Component {
