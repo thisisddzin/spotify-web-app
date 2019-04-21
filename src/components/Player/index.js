@@ -2,6 +2,12 @@ import React from "react";
 
 import Slider from "rc-slider";
 
+import Sound from "react-sound";
+
+import { connect } from "react-redux";
+
+import PropTypes from "prop-types";
+
 import {
   Container,
   Current,
@@ -22,8 +28,16 @@ import RepeatIcon from "../../assets/images/repeat.svg";
 
 import EminemCover from "../../assets/covers/eminem.jpg";
 
-const Player = () => (
+
+const Player = ({ player: { currentSong, status } }) => (
   <Container>
+    {!!currentSong && (
+      <Sound
+        url={currentSong.file}
+        playStatus={status}
+      />
+    )}
+
     <Current>
       <img src={EminemCover} alt="Current Album" />
       <div>
@@ -76,4 +90,15 @@ const Player = () => (
   </Container>
 );
 
-export default Player;
+Player.propTypes = {
+  currentSong: PropTypes.shape({
+    file: PropTypes.string
+  }).isRequired,
+  status: PropTypes.string.isRequired
+}
+
+const mapStateToProps = state => ({
+  player: state.player
+})
+
+export default connect(mapStateToProps)(Player);

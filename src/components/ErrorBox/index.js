@@ -1,16 +1,31 @@
 import React from "react";
 
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { Creators as ErrorActions } from "../../store/ducks/error";
+
 import CloseIcon from "../../assets/images/close.svg";
 
-import { Container, Button } from "./styles";
+import { Container } from "./styles";
 
-const ErrorBox = () => (
+const ErrorBox = ({ hideError, error: { visible, message } }) => visible && (
   <Container>
-    <p>Mensagem de error</p>
-    <Button>
+    <p>{message}</p>
+    <button onClick={hideError}>
       <img src={CloseIcon} alt="Cloce icon" />
-    </Button>
+    </button>
   </Container>
 );
 
-export default ErrorBox;
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(ErrorActions, dispatch);
+
+const mapStateToProps = state => ({
+  error: state.error
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ErrorBox);
+

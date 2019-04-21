@@ -24,6 +24,7 @@ export const Search = styled.div`
     color: #121212;
     border: 0;
     width: 100%;
+    background: transparent;
   }
 `;
 

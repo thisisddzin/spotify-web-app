@@ -12,13 +12,13 @@ export const Container = styled.div`
   border-radius: 3px;
   justify-content: space-between;
   align-items: center;
-`;
 
-export const Button = styled.button`
-  border: 0;
-  background: transparent;
+  button {
+    border: 0;
+    background: transparent;
 
-  img {
-    height: 14px;
+    img {
+      height: 14px;
+    }
   }
 `;
