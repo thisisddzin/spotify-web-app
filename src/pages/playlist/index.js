@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import { Container, Header, SongList } from "./styles";
+import { Container, Header, SongList, SongItem } from "./styles";
 
 import PropTypes from "prop-types";
 
@@ -10,8 +10,6 @@ import { Creators as PlaylistDetailsActions } from "../../store/ducks/playlistDe
 import { Creators as PlayerActions } from "../../store/ducks/player";
 
 import Loading from "../../components/Loading";
-
-import EminemCover from "../../assets/covers/eminem.jpg";
 
 import ClockIcon from "../../assets/images/clock.svg";
 import PlusIcon from "../../assets/images/plus.svg";
@@ -40,8 +38,15 @@ class Playlist extends Component {
         )
       }),
       loading: PropTypes.bool
-    }).isRequired
+    }).isRequired,
+    currentSong: PropTypes.shape({
+      id: PropTypes.number
+    }).isRequired,
   };
+
+  state = {
+    selectedSong: null
+  }
 
   componentDidMount() {
     this.loadPlaylistDetails();
@@ -90,7 +95,13 @@ class Playlist extends Component {
               </td>
             ) : (
               playlist.songs.map(song => (
-                <tr key={song.id} onDoubleClick={() => this.props.loadSong(song)}>
+                <SongItem
+                  key={song.id} o
+                  onClick={() => this.setState({ selectedSong: song.id })}
+                  onDoubleClick={() => this.props.loadSong(song)}
+                  selected={this.state.selectedSong === song.id}
+                  playing={this.props.currentSong && this.props.currentSong.id === song.id}
+                >
                   <td>
                     <img src={PlusIcon} alt="Adicionar" />
                   </td>
@@ -98,7 +109,7 @@ class Playlist extends Component {
                   <td>{song.author}</td>
                   <td>{song.album}</td>
                   <td>3:23</td>
-                </tr>
+                </SongItem>
               ))
             )}
           </tbody>
@@ -125,7 +136,8 @@ const mapDispatchToProps = dispatch =>
   }, dispatch);
 
 const mapStateToProps = state => ({
-  playlist: state.playlistDetails
+  playlist: state.playlistDetails,
+  currentSong: state.player.currentSong
 });
 
 export default connect(

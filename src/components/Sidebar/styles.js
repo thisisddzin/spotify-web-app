@@ -16,6 +16,7 @@ export const Container = styled.aside`
 
   > div {
     padding: 25px;
+    overflow: auto;
   }
 `;
 

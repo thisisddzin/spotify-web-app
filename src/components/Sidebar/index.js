@@ -62,7 +62,7 @@ class Sidebar extends Component {
             <li>
               <Link to="">Artistas</Link>
             </li>
-            {/* <li>
+            <li>
               <Link to="">Estações</Link>
             </li>
             <li>
@@ -73,7 +73,7 @@ class Sidebar extends Component {
             </li>
             <li>
               <Link to="">Podcasts</Link>
-            </li> */}
+            </li>
           </Nav>
           <Nav>
             <li>

@@ -1,10 +1,11 @@
-import React from "react";
+import React, { Fragment } from "react";
 
 import Slider from "rc-slider";
 
 import Sound from "react-sound";
 
 import { connect } from "react-redux";
+import { Creators as playerActions } from "../../store/ducks/player";
 
 import PropTypes from "prop-types";
 
@@ -27,9 +28,10 @@ import ForwardIcon from "../../assets/images/forward.svg";
 import RepeatIcon from "../../assets/images/repeat.svg";
 
 import EminemCover from "../../assets/covers/eminem.jpg";
+import { bindActionCreators } from "redux";
 
 
-const Player = ({ player: { currentSong, status } }) => (
+const Player = ({ player: { currentSong, status }, playSong, pauseSong }) => (
   <Container>
     {!!currentSong && (
       <Sound
@@ -39,11 +41,16 @@ const Player = ({ player: { currentSong, status } }) => (
     )}
 
     <Current>
-      <img src={EminemCover} alt="Current Album" />
-      <div>
-        <span>Superman</span>
-        <small>Eminem</small>
-      </div>
+      {!!currentSong && (
+        <Fragment>
+          <img src={currentSong.thumbnail} alt="Current Album" />
+          <div>
+            <span>{currentSong.title}</span>
+            <small>{currentSong.author}</small>
+          </div>
+        </Fragment>
+      )}
+
     </Current>
 
     <Progress>
@@ -54,9 +61,15 @@ const Player = ({ player: { currentSong, status } }) => (
         <button>
           <img src={BackwardIcon} alt="Backward" />
         </button>
-        <button>
-          <img src={PlayIcon} alt="Play" />
+        {!!currentSong && status === Sound.status.PLAYING ? (
+          <button onClick={pauseSong}>
+          <img src={PauseIcon} alt="Pause" />
         </button>
+        ) : (
+          <button onClick={playSong}>
+            <img src={PlayIcon} alt="Play" />
+          </button>
+        )}
         <button>
           <img src={ForwardIcon} alt="Forward" />
         </button>
@@ -92,7 +105,10 @@ const Player = ({ player: { currentSong, status } }) => (
 
 Player.propTypes = {
   currentSong: PropTypes.shape({
-    file: PropTypes.string
+    file: PropTypes.string,
+    thumbnail: PropTypes.string,
+    author: PropTypes.string,
+    title: PropTypes.string
   }).isRequired,
   status: PropTypes.string.isRequired
 }
@@ -101,4 +117,6 @@ const mapStateToProps = state => ({
   player: state.player
 })
 
-export default connect(mapStateToProps)(Player);
+const mapDispatchToProps = dispatch => bindActionCreators(playerActions, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(Player);
